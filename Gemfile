@@ -7,4 +7,5 @@ gemspec
 
 group :development, :test do
   gem 'pry'
+  gem 'standardrb'
 end

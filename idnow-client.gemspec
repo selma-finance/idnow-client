@@ -21,11 +21,11 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'net-sftp', '~>2.1'
 
-  spec.required_ruby_version = '~> 2.3'
+  spec.required_ruby_version = '>= 2.3', '< 4'
 
   spec.add_development_dependency 'factory_bot', '~> 4.5'
   spec.add_development_dependency 'rspec', '~> 3.3'
-  spec.add_development_dependency 'rubocop', '~> 0.54.0'
+  spec.add_development_dependency 'rubocop', '~> 0.60'
   spec.add_development_dependency 'shoulda-matchers', '~>3.1'
   spec.add_development_dependency 'simplecov', '~> 0.10'
   spec.add_development_dependency 'webmock', '~> 1.22'

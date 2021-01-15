@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'idnow/API/authentication'
-require 'idnow/API/automated_testing' # shouldn't be included by default
-require 'idnow/API/request_identifications'
-require 'idnow/API/retrieve_identifications'
-require 'idnow/API/document_definitions'
-require 'idnow/API/upload_documents'
-require 'idnow/API/download_documents'
+require "idnow/API/authentication"
+require "idnow/API/automated_testing" # shouldn't be included by default
+require "idnow/API/request_identifications"
+require "idnow/API/retrieve_identifications"
+require "idnow/API/document_definitions"
+require "idnow/API/upload_documents"
+require "idnow/API/download_documents"
 
 module Idnow
   class Client
@@ -18,18 +18,18 @@ module Idnow
     include Idnow::API::UploadDocuments
     include Idnow::API::DownloadDocuments
 
-    API_VERSION = 'v1'
+    API_VERSION = "v1"
 
     attr_reader :host
 
     def initialize(env:, company_id:, api_key:, timeout: nil, sftp_options: {})
-      raise 'Please set env to :test or :live' unless Idnow::ENVIRONMENTS.keys.include?(env)
-      raise 'Please set your company_id' if company_id.nil?
-      raise 'Please set your api_key' if api_key.nil?
-      @host        = Idnow.endpoint(env, :host)
+      raise "Please set env to :test or :live" unless Idnow::ENVIRONMENTS.key?(env)
+      raise "Please set your company_id" if company_id.nil?
+      raise "Please set your api_key" if api_key.nil?
+      @host = Idnow.endpoint(env, :host)
       @target_host = Idnow.endpoint(env, :target_host)
-      @company_id  = company_id
-      @api_key     = api_key
+      @company_id = company_id
+      @api_key = api_key
 
       @http_client = HttpClient.new(host: @host)
 
@@ -42,11 +42,11 @@ module Idnow
     def execute(request, headers = {}, http_client: @http_client)
       http_response = http_client.execute(request, headers)
 
-      response = if request.content_type == 'application/json'
-                   Idnow::JsonResponse.new(http_response.body)
-                 else
-                   Idnow::RawResponse.new(http_response.body)
-                 end
+      response = if request.content_type == "application/json"
+        Idnow::JsonResponse.new(http_response.body)
+      else
+        Idnow::RawResponse.new(http_response.body)
+      end
 
       response.tap do |r|
         raise Idnow::ResponseException, r.errors if r.errors?
@@ -54,7 +54,7 @@ module Idnow
     end
 
     def full_path_for(partial_path)
-      File.join('/api', API_VERSION, @company_id, partial_path)
+      File.join("/api", API_VERSION, @company_id, partial_path)
     end
 
     def automated_testing_http_client

@@ -9,13 +9,13 @@ module Idnow
         raise Idnow::AuthenticationException if @auth_token.nil?
 
         unless status.nil? || IDENTIFICATION_STATUSES.include?(status)
-          raise Idnow::InvalidArguments, "Status #{status} not defined, possible options are: #{IDENTIFICATION_STATUSES.join(',')}"
+          raise Idnow::InvalidArguments, "Status #{status} not defined, possible options are: #{IDENTIFICATION_STATUSES.join(",")}"
         end
-        partial_path = status.nil? ? 'identifications' : "identifications?#{status}=true"
+        partial_path = status.nil? ? "identifications" : "identifications?#{status}=true"
         path = full_path_for(partial_path)
         request = Idnow::GetRequest.new(path)
-        response = execute(request, 'X-API-LOGIN-TOKEN' => @auth_token)
-        response.data['identifications'].map do |data|
+        response = execute(request, {"X-API-LOGIN-TOKEN" => @auth_token})
+        response.data["identifications"].map do |data|
           Idnow::Identification.new(data)
         end
       end
@@ -25,7 +25,7 @@ module Idnow
 
         path = full_path_for("identifications/#{transaction_number}")
         request = Idnow::GetRequest.new(path)
-        response = execute(request, 'X-API-LOGIN-TOKEN' => @auth_token)
+        response = execute(request, {"X-API-LOGIN-TOKEN" => @auth_token})
         Idnow::Identification.new(response.data)
       end
 
